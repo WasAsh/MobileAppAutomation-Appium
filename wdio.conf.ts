@@ -22,6 +22,7 @@ const androidCaps: Record<string, unknown> = {
     'appium:newCommandTimeout': 120,
     'appium:adbExecTimeout': 60000,
     'appium:uiautomator2ServerInstallTimeout': 60000,
+    'appium:androidDeviceReadyTimeout': 120000,
 }
 
 if (platformVersion) {
