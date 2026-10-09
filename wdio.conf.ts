@@ -21,7 +21,11 @@ const androidCaps: Record<string, unknown> = {
     'appium:fullReset': false,
     'appium:newCommandTimeout': 120,
     'appium:adbExecTimeout': 60000,
-    'appium:uiautomator2ServerInstallTimeout': 60000,
+    // Cold CI emulators can take well over the driver's 60 s default to
+    // install the UiAutomator2 server APK on first session; raise only this
+    // ceiling (evidenced CI tripwire). All other timeouts stay as-is so a
+    // genuinely wedged device still fails fast with clear errors.
+    'appium:uiautomator2ServerInstallTimeout': 180000,
     'appium:androidDeviceReadyTimeout': 120000,
 }
 
