@@ -51,6 +51,15 @@ jobs:
       - name: Typecheck
         run: pnpm exec tsc --noEmit
 
+      # ubuntu runners expose /dev/kvm but not to the runner user; without
+      # this the action auto-appends `-accel off` and the emulator crawls
+      # (adbd goes offline, sessions stall). Action-documented prerequisite.
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       # The runner reports boot before Android's activity/package services
       # (which Appium drives via `settings`/`dumpsys`) are usable, so gate
       # the suite on real readiness instead of boot_completed alone.
