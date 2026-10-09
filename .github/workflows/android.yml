@@ -1,0 +1,71 @@
+name: Android E2E
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  android-e2e:
+    name: Android E2E (API 34)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ANDROID_DEVICE_NAME: emulator-5554
+      ANDROID_PLATFORM_VERSION: '14'
+      APPIUM_PORT: '4723'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.21.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # postinstall (scripts/sync-appium-manifest.mjs) registers the
+      # pnpm-installed UiAutomator2 driver in the project-local APPIUM_HOME,
+      # so the WDIO Appium service can start the server with the driver.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # No APK is committed to the repo; fetch the exact build the suite was
+      # developed against (2.3.0, same as the local test device).
+      - name: Download Swag Labs APK
+        run: |
+          curl -fSL --retry 3 --retry-all-errors --retry-delay 5 -o /tmp/swaglabs.apk https://github.com/saucelabs/sample-app-mobile/releases/download/2.3.0/Android.SauceLabs.Mobile.Sample.app.2.3.0.apk
+          echo "ANDROID_APP_PATH=/tmp/swaglabs.apk" >> "$GITHUB_ENV"
+
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Run Android E2E (full suite)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          disable-animations: true
+          script: pnpm test:all
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: reports/
+          retention-days: 14
