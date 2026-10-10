@@ -69,7 +69,7 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
-          profile: pixel_6
+          profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           disable-animations: true
           # NOTE: this action splits `script` into single lines and runs each
@@ -79,7 +79,7 @@ jobs:
             adb wait-for-device
             for i in $(seq 1 60); do BOOT=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r'); READY=$(adb shell "service check activity 2>/dev/null; service check package 2>/dev/null" | grep -c "found"); if [ "$BOOT" = "1" ] && [ "$READY" -ge 2 ]; then break; fi; sleep 5; done
             adb shell input keyevent 82 || true
-            sleep 15
+            sleep 30
             pnpm test:all
 
       - name: Upload test results
