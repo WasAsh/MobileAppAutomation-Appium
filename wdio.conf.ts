@@ -33,11 +33,11 @@ if (platformVersion) {
     androidCaps['appium:platformVersion'] = platformVersion
 }
 
+androidCaps['appium:appPackage'] = 'com.swaglabsmobileapp'
+androidCaps['appium:appActivity'] = '.MainActivity'
+
 if (appPath) {
     androidCaps['appium:app'] = appPath
-} else {
-    androidCaps['appium:appPackage'] = 'com.swaglabsmobileapp'
-    androidCaps['appium:appActivity'] = '.MainActivity'
 }
 
 const featureBySpec: Record<string, string> = {
