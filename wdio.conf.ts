@@ -110,6 +110,10 @@ export const config = {
             'appium',
             {
                 command: 'appium',
+                // Diagnostic only: mirror the Appium server log (adb installs,
+                // app launches, session errors) into reports/, which CI
+                // uploads even on failure. No behavior change to the suite.
+                logPath: 'reports',
                 args: {
                     port: appiumPort,
                 },
