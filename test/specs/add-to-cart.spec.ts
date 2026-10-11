@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha'
+import { describe, it, beforeEach } from 'mocha'
 import { expect } from '@wdio/globals'
 import LoginPage from '../pageobjects/LoginPage.js'
 import ProductsPage from '../pageobjects/ProductsPage.js'
@@ -6,6 +6,10 @@ import CartPage from '../pageobjects/CartPage.js'
 import { standardUser } from '../data/users.js'
 
 describe('Add to cart E2E @regression', () => {
+    beforeEach(async () => {
+        await browser.reloadSession()
+    })
+
     it('login as standard user, add first product, verify it in cart', async () => {
         await LoginPage.login(standardUser)
         expect(await ProductsPage.isProductsScreenDisplayed()).toBe(true)

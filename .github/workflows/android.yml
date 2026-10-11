@@ -82,6 +82,16 @@ jobs:
             sleep 30
             pnpm test:all
 
+      # Render the viewable HTML report from the raw Allure results so the
+      # uploaded artifact contains both. `if: always()` mirrors the upload
+      # step: a failing suite must still publish its report. A passing
+      # generate step never clears the job failure recorded by the E2E step.
+      - name: Generate Allure report
+        if: always()
+        run: |
+          npm install -g allure-commandline
+          pnpm report:allure
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4

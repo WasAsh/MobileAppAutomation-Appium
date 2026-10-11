@@ -43,6 +43,9 @@ if (appPath) {
 const featureBySpec: Record<string, string> = {
     'smoke.spec.ts': 'Smoke',
     'add-to-cart.spec.ts': 'Shopping cart',
+    'remove-from-cart.spec.ts': 'Shopping cart',
+    'problem-user.spec.ts': 'Shopping cart',
+    'checkout.spec.ts': 'Checkout',
     'login-negative.spec.ts': 'Authentication',
 }
 
@@ -53,7 +56,7 @@ export const config = {
 
     suites: {
         smoke: ['./test/specs/smoke.spec.ts'],
-        regression: ['./test/specs/add-to-cart.spec.ts', './test/specs/login-negative.spec.ts'],
+        regression: ['./test/specs/add-to-cart.spec.ts', './test/specs/remove-from-cart.spec.ts', './test/specs/problem-user.spec.ts', './test/specs/checkout.spec.ts', './test/specs/login-negative.spec.ts'],
     },
 
     maxInstances: 1,

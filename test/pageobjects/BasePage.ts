@@ -18,4 +18,12 @@ export default class BasePage {
     async isDisplayed(element: UIElement): Promise<boolean> {
         return element.isDisplayed()
     }
+
+    // Scrolls the first scrollable container until an element matching the
+    // given UiSelector fragment (e.g. 'new UiSelector().description("test-X")')
+    // is visible, and returns it. Prefer plain selectors; use this only for
+    // elements below the fold on small screens.
+    protected scrollToElement(innerSelector: string): UIElement {
+        return $(`android=new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(${innerSelector})`)
+    }
 }

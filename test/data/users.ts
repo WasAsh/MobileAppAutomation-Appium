@@ -22,3 +22,15 @@ export const invalidUser: UserCredentials = {
     username: 'invalid_user',
     password: 'wrong_password',
 }
+
+export interface CheckoutInformation {
+    firstName: string
+    lastName: string
+    postalCode: string
+}
+
+export const checkoutInfo: CheckoutInformation = {
+    firstName: 'John',
+    lastName: 'Doe',
+    postalCode: '12345',
+}

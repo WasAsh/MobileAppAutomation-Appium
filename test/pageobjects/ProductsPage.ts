@@ -5,18 +5,28 @@ class ProductsPage extends BasePage {
         return $('android=new UiSelector().text("PRODUCTS")')
     }
 
+    private get firstProductItem() {
+        return $('android=new UiSelector().description("test-Item").instance(0)')
+    }
+
     async isProductsScreenDisplayed(): Promise<boolean> {
         await this.waitForDisplayed(this.title)
         return this.isDisplayed(this.title)
     }
 
     async addFirstProductToCart(): Promise<void> {
-        await this.tap($('android=new UiSelector().text("ADD TO CART").instance(0)'))
+        const button = this.firstProductItem.$(
+            'android=new UiSelector().description("test-ADD TO CART")'
+        )
+        await this.tap(button)
     }
 
     async getFirstProductName(): Promise<string> {
-        const name = await $('android=new UiSelector().text("Sauce Labs Backpack")').getText()
-        return name
+        const name = this.firstProductItem.$(
+            'android=new UiSelector().description("test-Item title")'
+        )
+        await this.waitForDisplayed(name)
+        return name.getText()
     }
 }
 
