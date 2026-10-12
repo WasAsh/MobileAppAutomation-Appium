@@ -83,7 +83,7 @@ is tracked as the deferred T7 step in `Docs/next-phase-plan.md`.
 
 ## Screenshots
 
-![CHECKOUT: OVERVIEW screen](Docs/assets/checkout-overview.png)
+![CHECKOUT: OVERVIEW screen](assets/checkout-overview.png)
 
 CHECKOUT: OVERVIEW screen (Sauce Labs Backpack, $29.99 order summary),
 captured automatically by the suite's `afterTest` failure-screenshot hook
